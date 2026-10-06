@@ -15,6 +15,8 @@ karar ve doğrulama kayıtları ilgili repolarda tutulur:
 - Yönetim ekranı `/admin` altında nested route'larla kuruldu. `admin` / `123456admin` bilgileri
   kullanıcı kararıyla backend'de statik tutuldu; e-posta yanıtı SMTP yerine `mailto:` olarak
   uygulandı.
+- Ürün ve runtime kimliği `Ent Challange` olarak değiştirildi. Kaynak repo ve submodule yolları
+  mevcut GitHub adresleriyle uyumluluk için korundu; canlı ortam için `*.fairdose.net` planlandı.
 
 ## Doğrulama özeti
 

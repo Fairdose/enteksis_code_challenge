@@ -1,6 +1,6 @@
-# Enteksis Code Challenge
+# Ent Challange
 
-Enteksis hizmet landing page'i, hizmet talep API'si ve Docker tabanlı PostgreSQL ortamı.
+Ent Challange hizmet landing page'i, hizmet talep API'si ve Docker tabanlı PostgreSQL ortamı.
 
 ## Repolar
 
