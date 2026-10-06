@@ -24,7 +24,25 @@ Her iki alt projedeki `run.sh` aynı Compose ortamını yönetir:
 ```
 
 - Client: `http://localhost:5173`
+- Admin: `http://localhost:5173/admin`
 - API: `http://localhost:8080`
 - PostgreSQL: `localhost:5432`
 
 Windows üzerinde scripti Git Bash veya WSL ile çalıştırın.
+
+Admin için varsayılan yerel kullanıcı adı `admin`, şifre `enteksis-local-admin` değeridir. Bu
+değerler backend `.env` dosyasında `ADMIN_USERNAME` ve `ADMIN_PASSWORD` ile değiştirilebilir.
+
+## Test
+
+```sh
+./enteksis_client/run.sh start
+cd enteksis_client
+pnpm install
+pnpm exec playwright install chromium
+pnpm test:e2e
+```
+
+Backend testleri için `cd enteksis_backend && go test ./...` komutunu kullanın. Ayrıntılı kurulum,
+mimari kararlar, bilinen eksikler ve AI doğrulama kayıtları alt repoların README ve AI_LOG
+dosyalarında yer alır.
