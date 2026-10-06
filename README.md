@@ -49,7 +49,8 @@ dosyalarında yer alır.
 
 ## Vultr canlı ortam örneği
 
-Client, Go API, PostgreSQL, TLS ve public Nginx gateway'i tek bir Vultr instance üzerinde
+Client, Go API, PostgreSQL, TLS ve host Nginx reverse proxy'yi tek bir Vultr instance üzerinde
 çalıştıran örnek Compose yapısı ile otomasyon scriptleri
 [`example/vultr`](example/vultr/README.md) dizinindedir. Canlı ortamda yalnızca `80/443`
-portları yayınlanır; PostgreSQL ve uygulama servisleri özel Docker ağında kalır.
+portları yayınlanır; uygulama servisleri yalnızca loopback'e bağlanır ve PostgreSQL özel Docker
+ağında kalır.

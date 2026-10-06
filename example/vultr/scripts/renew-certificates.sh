@@ -1,21 +1,31 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
-DEPLOY_DIR="$(cd -- "$SCRIPT_DIR/.." >/dev/null 2>&1 && pwd -P)"
-ENV_FILE="$DEPLOY_DIR/.env"
-COMPOSE_FILE="$DEPLOY_DIR/compose.yaml"
-
-[[ -f "$ENV_FILE" ]] || {
-  printf 'Eksik dosya: %s\n' "$ENV_FILE" >&2
+NGINX_BIN="$(command -v nginx 2>/dev/null || true)"
+[[ -n "$NGINX_BIN" ]] || NGINX_BIN="/usr/sbin/nginx"
+[[ -x "$NGINX_BIN" ]] || {
+  printf 'Gerekli komut bulunamadı: nginx\n' >&2
   exit 1
 }
 
-COMPOSE=(docker compose --env-file "$ENV_FILE" --file "$COMPOSE_FILE")
+if [[ "$EUID" -eq 0 ]]; then
+  SUDO=()
+else
+  command -v sudo >/dev/null 2>&1 || {
+    printf 'sudo bulunamadı. Scripti root olarak çalıştırın.\n' >&2
+    exit 1
+  }
+  SUDO=(sudo -n)
+fi
+
 CERTBOT_ARGS=(renew --webroot --webroot-path /var/www/certbot --quiet)
 if [[ "${1:-}" == "--dry-run" ]]; then
   CERTBOT_ARGS+=(--dry-run)
+elif [[ $# -ne 0 ]]; then
+  printf 'Bilinmeyen argüman: %s\n' "$1" >&2
+  exit 1
 fi
 
-"${COMPOSE[@]}" --profile tools run --rm certbot "${CERTBOT_ARGS[@]}"
-"${COMPOSE[@]}" exec gateway nginx -s reload
+"${SUDO[@]}" certbot "${CERTBOT_ARGS[@]}"
+"${SUDO[@]}" "$NGINX_BIN" -t
+"${SUDO[@]}" systemctl reload nginx

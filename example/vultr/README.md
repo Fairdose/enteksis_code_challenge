@@ -1,8 +1,8 @@
 # Vultr production example
 
 Bu dizin, Ent Challange uygulamasını tek bir Debian 13 veya Ubuntu 24.04 LTS Vultr Cloud Compute instance'ında
-çalıştırmak için örnek otomasyon içerir. Nginx yalnızca `80/443` portlarını yayınlar; Vue/nginx,
-Go API ve PostgreSQL aynı özel Docker ağında çalışır. PostgreSQL host portu internete açılmaz.
+çalıştırmak için örnek otomasyon içerir. Host Nginx yalnızca `80/443` portlarını yayınlar. Vue ve
+Go container'ları yalnızca loopback portlarına bağlanır; PostgreSQL host portu internete açılmaz.
 
 ## Mimari
 
@@ -10,14 +10,13 @@ Go API ve PostgreSQL aynı özel Docker ağında çalışır. PostgreSQL host po
 Internet
    │
    ▼
-Nginx gateway :80/:443
-   ├── ent-challange.fairdose.net ──────► Vue/nginx :8080
-   └── ent-challange-api.fairdose.net ──► Go API :8080 ──► PostgreSQL :5432
+Host Nginx :80/:443
+   ├── ent-challange.fairdose.net ──────► 127.0.0.1:8081 ─► Vue/nginx :8080
+   └── ent-challange-api.fairdose.net ──► 127.0.0.1:8082 ─► Go API :8080 ─► PostgreSQL :5432
 ```
 
-Certbot ilk sertifikayı standalone HTTP-01 ile alır. Çalışan Nginx,
-`/.well-known/acme-challenge/` yolunu ortak webroot'tan sunar; sonraki yenilemeler servisi
-durdurmadan yapılır.
+Certbot ilk sertifikayı webroot HTTP-01 ile alır. Host Nginx, `/.well-known/acme-challenge/`
+yolunu ortak webroot'tan sunar; sonraki yenilemeler servisi durdurmadan yapılır.
 
 ## 1. Vultr instance ve firewall
 
@@ -31,7 +30,8 @@ durdurmadan yapılır.
 | TCP | 80 | Her yer |
 | TCP | 443 | Her yer |
 
-`5432`, `8080` ve `5173` portlarını açmayın. Docker tarafından yalnızca `80/443` publish edilir.
+`5432`, `8081`, `8082` ve `5173` portlarını açmayın. Docker yalnızca `127.0.0.1:8081` ve
+`127.0.0.1:8082` adreslerine publish eder; public trafiği host Nginx karşılar.
 
 ## 2. Vultr DNS
 
@@ -51,7 +51,7 @@ dig +short ent-challange-api.fairdose.net
 
 İki komut da instance IPv4 adresini göstermelidir.
 
-## 3. Docker kurulumu
+## 3. Sunucu kurulumu
 
 Instance'a SSH ile bağlanın. Repodaki bootstrap scriptini çalıştırın:
 
@@ -60,8 +60,8 @@ chmod +x example/vultr/scripts/*.sh
 ./example/vultr/scripts/bootstrap-ubuntu.sh
 ```
 
-Script Docker'ın resmi Ubuntu apt repository'sini kullanır ve Docker Engine, Buildx ile Compose
-pluginini kurar. Kullanıcı Docker grubuna eklendiyse SSH oturumunu kapatıp yeniden açın.
+Script dağıtıma uygun resmi Docker apt repository'sini kullanır; Docker Engine, Buildx, Compose,
+Nginx ve Certbot'u kurar. Kullanıcı Docker grubuna eklendiyse SSH oturumunu kapatıp yeniden açın.
 
 ## 4. Kaynak kodu yerleştirme
 
@@ -95,15 +95,16 @@ dosyaları ve database yedekleri Git tarafından ignore edilir. `.env` dosyasın
 
 ## 6. İlk TLS ve deploy
 
-Port 80 başka bir süreç tarafından kullanılmamalı ve iki DNS kaydı instance'a çözülmelidir:
+İki DNS kaydı instance'a çözülmelidir:
 
 ```sh
 cd /opt/ent-challange
 ./example/vultr/scripts/init-tls.sh
 ```
 
-Bu script sırasıyla PostgreSQL, migration, Go API ve client'ı build eder; iki alan adı için tek
-Let's Encrypt sertifikası alır ve TLS Nginx gateway'i başlatır.
+Bu script sırasıyla HTTP Nginx site dosyasını kurar, UFW üzerinde `80/443` portlarını açar,
+PostgreSQL, migration, Go API ve client'ı build eder; iki alan adı için tek Let's Encrypt
+sertifikası alır ve host Nginx'i HTTPS konfigürasyonuna geçirir.
 
 Sonraki deploylar:
 

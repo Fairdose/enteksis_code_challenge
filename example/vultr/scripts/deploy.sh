@@ -27,7 +27,7 @@ if [[ ! "$POSTGRES_PASSWORD" =~ ^[[:xdigit:]]{64}$ ]]; then
   exit 1
 fi
 
-CERTIFICATE_PATH="$DEPLOY_DIR/data/letsencrypt/live/$FRONTEND_DOMAIN/fullchain.pem"
+CERTIFICATE_PATH="/etc/letsencrypt/live/$FRONTEND_DOMAIN/fullchain.pem"
 [[ -f "$CERTIFICATE_PATH" ]] || {
   printf 'TLS sertifikası bulunamadı. Önce scripts/init-tls.sh çalıştırın.\n' >&2
   exit 1

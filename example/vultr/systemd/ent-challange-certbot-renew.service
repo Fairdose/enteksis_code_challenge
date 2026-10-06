@@ -1,7 +1,7 @@
 [Unit]
 Description=Renew Ent Challange TLS certificates
-Requires=docker.service
-After=docker.service
+Wants=network-online.target
+After=network-online.target nginx.service
 
 [Service]
 Type=oneshot

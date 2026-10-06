@@ -24,7 +24,8 @@ else
 fi
 
 "${SUDO[@]}" apt-get update
-"${SUDO[@]}" apt-get install -y ca-certificates curl git openssl
+"${SUDO[@]}" env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  ca-certificates certbot curl git nginx openssl
 "${SUDO[@]}" install -m 0755 -d /etc/apt/keyrings
 "${SUDO[@]}" curl -fsSL "https://download.docker.com/linux/${ID}/gpg" \
   -o /etc/apt/keyrings/docker.asc
