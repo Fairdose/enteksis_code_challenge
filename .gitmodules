@@ -1,0 +1,6 @@
+[submodule "enteksis_client"]
+	path = enteksis_client
+	url = https://github.com/Fairdose/enteksis_client.git
+[submodule "enteksis_backend"]
+	path = enteksis_backend
+	url = https://github.com/Fairdose/enteksis_backend.git
