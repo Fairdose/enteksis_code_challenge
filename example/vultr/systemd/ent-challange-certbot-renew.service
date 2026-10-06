@@ -1,0 +1,9 @@
+[Unit]
+Description=Renew Ent Challange TLS certificates
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/ent-challange/example/vultr
+ExecStart=/opt/ent-challange/example/vultr/scripts/renew-certificates.sh

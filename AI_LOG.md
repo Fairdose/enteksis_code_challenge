@@ -17,6 +17,9 @@ karar ve doğrulama kayıtları ilgili repolarda tutulur:
   uygulandı.
 - Ürün ve runtime kimliği `Ent Challange` olarak değiştirildi. Kaynak repo ve submodule yolları
   mevcut GitHub adresleriyle uyumluluk için korundu; canlı ortam için `*.fairdose.net` planlandı.
+- Ücretsiz çoklu servis hosting planı kullanıcı kararıyla kaldırıldı. Canlı ortam; Nginx, Vue,
+  Go API, PostgreSQL ve Certbot'un aynı Vultr instance üzerinde izole containerlarda çalıştığı,
+  Vultr DNS ile yayınlanan tek sunucu mimarisine dönüştürüldü.
 
 ## Doğrulama özeti
 
@@ -25,5 +28,8 @@ karar ve doğrulama kayıtları ilgili repolarda tutulur:
 - Docker Desktop üzerinde client, API ve PostgreSQL healthcheck'leri geçti.
 - Playwright ile public formun gerçek PostgreSQL kaydı ve admin giriş/liste/detay/`mailto:` akışı
   uçtan uca doğrulandı.
+- Vultr production Compose modeli çözümlendi; Bash scriptleri sözdizimi kontrolünden, Go ve Vue
+  image'ları gerçek Docker build'inden, public Nginx gateway yapılandırması ise `nginx -t`
+  kontrolünden geçti. Yalnızca `80/443` portlarının host'a publish edildiği ayrıca doğrulandı.
 
 Çalışma tek Codex oturumunda alt ajan kullanılmadan gerçekleştirildi.

@@ -46,3 +46,10 @@ pnpm test:e2e
 Backend testleri için `cd enteksis_backend && go test ./...` komutunu kullanın. Ayrıntılı kurulum,
 mimari kararlar, bilinen eksikler ve AI doğrulama kayıtları alt repoların README ve AI_LOG
 dosyalarında yer alır.
+
+## Vultr canlı ortam örneği
+
+Client, Go API, PostgreSQL, TLS ve public Nginx gateway'i tek bir Vultr instance üzerinde
+çalıştıran örnek Compose yapısı ile otomasyon scriptleri
+[`example/vultr`](example/vultr/README.md) dizinindedir. Canlı ortamda yalnızca `80/443`
+portları yayınlanır; PostgreSQL ve uygulama servisleri özel Docker ağında kalır.
