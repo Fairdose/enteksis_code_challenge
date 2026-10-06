@@ -18,7 +18,13 @@ else
   SUDO=(sudo -n)
 fi
 
-CERTBOT_ARGS=(renew --webroot --webroot-path /var/www/certbot --quiet)
+CERTBOT_ARGS=(
+  renew
+  --webroot
+  --webroot-path /var/www/certbot
+  --quiet
+  --no-random-sleep-on-renew
+)
 if [[ "${1:-}" == "--dry-run" ]]; then
   CERTBOT_ARGS+=(--dry-run)
 elif [[ $# -ne 0 ]]; then
