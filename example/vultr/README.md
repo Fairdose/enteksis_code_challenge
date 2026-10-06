@@ -118,19 +118,25 @@ Root repository'deki `Validate and deploy` workflow'u her pull request ve `main`
 backend, shell scriptleri ve production Compose dosyasını doğrular. Pull request dışındaki başarılı
 çalışmalar GitHub `production` environment'ı üzerinden VPS'e exact commit SHA deploy eder.
 
-GitHub repository ayarlarında şu production secret'larını tanımlayın:
+Deploy job'u repository-scoped, `ent-challange-production` etiketli self-hosted runner üzerinde
+çalışır. Böylece VPS SSH portunu GitHub-hosted runner IP aralıklarına açmak gerekmez. GitHub'da
+`Settings > Actions > Runners > New self-hosted runner` üzerinden tek kullanımlık registration
+token oluşturun ve VPS üzerinde çalıştırın:
 
-| Ad | İçerik |
-| --- | --- |
-| `VPS_SSH_PRIVATE_KEY` | Yalnızca deploy için kullanılan SSH private key |
-| `VPS_SSH_KNOWN_HOSTS` | VPS'in önceden doğrulanmış `known_hosts` satırı |
+```sh
+read -r -s -p 'GitHub registration token: ' RUNNER_REGISTRATION_TOKEN
+export RUNNER_REGISTRATION_TOKEN
+./example/vultr/scripts/install-github-runner.sh
+unset RUNNER_REGISTRATION_TOKEN
+```
+
+Token girdikten sonra Enter'a basın. Token'ı repoya veya shell history'ye yazmayın. Kurulum runner'ı `dev_fairdose` kullanıcısı adına
+systemd servisi olarak başlatır. Self-hosted runner yalnızca production deploy job'u için kullanılır;
+pull request doğrulamaları GitHub-hosted runner'da kalır.
 
 Production variable'ı `VPS_DEPLOY_ENABLED=true` olmadan deploy job'u çalışmaz. Bu anahtarı ancak
-ilk TLS kurulumu ve health check başarılı olduktan sonra etkinleştirin. İsteğe bağlı variable'lar
-`VPS_HOST`, `VPS_PORT`, `VPS_USER` değerleridir; varsayılanlar sırasıyla `fairdose.net`, `22` ve
-`dev_fairdose` değerleridir. Private key'i repoya koymayın;
-`known_hosts` değerini de ilk bağlantıda otomatik kabul etmek yerine yerelde doğruladığınız kayıttan
-alın. İsterseniz `production` environment'ına required reviewer ekleyebilirsiniz.
+ilk TLS kurulumu ve health check başarılı olduktan sonra etkinleştirin. İsterseniz GitHub
+`production` environment'ına required reviewer ekleyebilirsiniz.
 
 İlk CI deploy'undan önce `/opt/ent-challange` checkout'u ve `.env` dosyası elle hazırlanmış,
 Docker grup üyeliği yeni SSH oturumunda etkinleşmiş ve TLS kurulumu tamamlanmış olmalıdır.

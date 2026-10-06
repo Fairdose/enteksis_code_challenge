@@ -70,42 +70,11 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request' && vars.VPS_DEPLOY_ENABLED == 'true'
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64, ent-challange-production]
     environment:
       name: production
       url: https://ent-challange.fairdose.net
-    env:
-      VPS_HOST: ${{ vars.VPS_HOST || 'fairdose.net' }}
-      VPS_PORT: ${{ vars.VPS_PORT || '22' }}
-      VPS_USER: ${{ vars.VPS_USER || 'dev_fairdose' }}
-      VPS_SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
-      VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
     steps:
       - uses: actions/checkout@v5
-      - name: Configure SSH
-        run: |
-          test -n "$VPS_SSH_PRIVATE_KEY"
-          test -n "$VPS_SSH_KNOWN_HOSTS"
-          install -d -m 0700 "$HOME/.ssh"
-          printf '%s\n' "$VPS_SSH_PRIVATE_KEY" > "$HOME/.ssh/deploy_key"
-          printf '%s\n' "$VPS_SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
-          chmod 0600 "$HOME/.ssh/deploy_key" "$HOME/.ssh/known_hosts"
       - name: Deploy exact revision
-        run: |
-          remote_script=".cache/ent-challange/deploy-${GITHUB_SHA}.sh"
-          ssh_options=(
-            -i "$HOME/.ssh/deploy_key"
-            -o BatchMode=yes
-            -o IdentitiesOnly=yes
-            -o "Port=$VPS_PORT"
-            -o StrictHostKeyChecking=yes
-          )
-          ssh "${ssh_options[@]}" "$VPS_USER@$VPS_HOST" \
-            'install -d -m 0700 "$HOME/.cache/ent-challange"'
-          scp "${ssh_options[@]}" \
-            example/vultr/scripts/deploy-revision.sh \
-            "$VPS_USER@$VPS_HOST:$remote_script"
-          # shellcheck disable=SC2029
-          ssh "${ssh_options[@]}" "$VPS_USER@$VPS_HOST" \
-            'bash "$1" "$2"; status=$?; unlink "$1"; exit $status' \
-            bash "$remote_script" "$GITHUB_SHA"
+        run: bash example/vultr/scripts/deploy-revision.sh "$GITHUB_SHA"
