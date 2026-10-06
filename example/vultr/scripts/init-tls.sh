@@ -11,6 +11,8 @@ NGINX_AVAILABLE="/etc/nginx/sites-available/ent-challange"
 NGINX_ENABLED="/etc/nginx/sites-enabled/ent-challange"
 NGINX_BIN="$(command -v nginx 2>/dev/null || true)"
 [[ -n "$NGINX_BIN" ]] || NGINX_BIN="/usr/sbin/nginx"
+UFW_BIN="$(command -v ufw 2>/dev/null || true)"
+[[ -n "$UFW_BIN" ]] || UFW_BIN="/usr/sbin/ufw"
 
 [[ -f "$ENV_FILE" ]] || {
   printf 'Eksik dosya: %s. Önce .env.example dosyasını .env olarak kopyalayın.\n' "$ENV_FILE" >&2
@@ -61,9 +63,9 @@ fi
 sudo -n "$NGINX_BIN" -t
 sudo -n systemctl reload nginx
 
-if command -v ufw >/dev/null 2>&1 && sudo -n ufw status | grep -q '^Status: active'; then
-  sudo -n ufw allow 80/tcp
-  sudo -n ufw allow 443/tcp
+if [[ -x "$UFW_BIN" ]] && sudo -n "$UFW_BIN" status | grep -q '^Status: active'; then
+  sudo -n "$UFW_BIN" allow 80/tcp
+  sudo -n "$UFW_BIN" allow 443/tcp
 fi
 
 COMPOSE=(docker compose --env-file "$ENV_FILE" --file "$COMPOSE_FILE")

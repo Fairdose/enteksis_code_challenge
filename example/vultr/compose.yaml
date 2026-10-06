@@ -84,4 +84,3 @@ volumes:
 
 networks:
   application:
-    internal: true
