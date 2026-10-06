@@ -1,6 +1,6 @@
 # Vultr production example
 
-Bu dizin, Ent Challange uygulamasını tek bir Ubuntu 24.04 LTS Vultr Cloud Compute instance'ında
+Bu dizin, Ent Challange uygulamasını tek bir Debian 13 veya Ubuntu 24.04 LTS Vultr Cloud Compute instance'ında
 çalıştırmak için örnek otomasyon içerir. Nginx yalnızca `80/443` portlarını yayınlar; Vue/nginx,
 Go API ve PostgreSQL aynı özel Docker ağında çalışır. PostgreSQL host portu internete açılmaz.
 
@@ -21,7 +21,7 @@ durdurmadan yapılır.
 
 ## 1. Vultr instance ve firewall
 
-- Ubuntu 24.04 LTS instance oluşturun.
+- Debian 13 veya Ubuntu 24.04 LTS instance oluşturun.
 - SSH key kullanın; parola ile root girişini kapatmanız önerilir.
 - Vultr Firewall inbound kuralları:
 
@@ -111,7 +111,32 @@ Sonraki deploylar:
 ./example/vultr/scripts/deploy.sh
 ```
 
-## 7. Sertifika yenileme
+## 7. GitHub Actions CI/CD
+
+Root repository'deki `Validate and deploy` workflow'u her pull request ve `main` push'unda client,
+backend, shell scriptleri ve production Compose dosyasını doğrular. Pull request dışındaki başarılı
+çalışmalar GitHub `production` environment'ı üzerinden VPS'e exact commit SHA deploy eder.
+
+GitHub repository ayarlarında şu production secret'larını tanımlayın:
+
+| Ad | İçerik |
+| --- | --- |
+| `VPS_SSH_PRIVATE_KEY` | Yalnızca deploy için kullanılan SSH private key |
+| `VPS_SSH_KNOWN_HOSTS` | VPS'in önceden doğrulanmış `known_hosts` satırı |
+
+Production variable'ı `VPS_DEPLOY_ENABLED=true` olmadan deploy job'u çalışmaz. Bu anahtarı ancak
+ilk TLS kurulumu ve health check başarılı olduktan sonra etkinleştirin. İsteğe bağlı variable'lar
+`VPS_HOST`, `VPS_PORT`, `VPS_USER` değerleridir; varsayılanlar sırasıyla `fairdose.net`, `22` ve
+`dev_fairdose` değerleridir. Private key'i repoya koymayın;
+`known_hosts` değerini de ilk bağlantıda otomatik kabul etmek yerine yerelde doğruladığınız kayıttan
+alın. İsterseniz `production` environment'ına required reviewer ekleyebilirsiniz.
+
+İlk CI deploy'undan önce `/opt/ent-challange` checkout'u ve `.env` dosyası elle hazırlanmış,
+Docker grup üyeliği yeni SSH oturumunda etkinleşmiş ve TLS kurulumu tamamlanmış olmalıdır.
+`deploy-revision.sh` yalnızca `origin/main` geçmişindeki SHA'ları kabul eder, aynı anda tek deploy
+çalıştırır ve health check başarısızlığında önceki revision'a rollback dener.
+
+## 8. Sertifika yenileme
 
 Önce dry-run çalıştırın:
 
@@ -133,7 +158,7 @@ sudo systemctl enable --now ent-challange-certbot-renew.timer
 systemctl list-timers ent-challange-certbot-renew.timer
 ```
 
-## 8. PostgreSQL yedeği
+## 9. PostgreSQL yedeği
 
 ```sh
 ./example/vultr/scripts/backup-database.sh
@@ -143,7 +168,7 @@ Yedekler `example/vultr/backups/` altında, yalnızca sahibi tarafından okunabi
 format dosyaları olarak oluşturulur. Instance kaybına karşı bu dosyaları ayrıca instance dışında
 saklayın veya Vultr automatic backup/snapshot özelliğini etkinleştirin.
 
-## 9. Doğrulama
+## 10. Doğrulama
 
 ```sh
 curl --fail https://ent-challange-api.fairdose.net/health
