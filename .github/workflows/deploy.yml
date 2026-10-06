@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   validate:
+    if: github.actor == 'Fairdose' && github.triggering_actor == 'Fairdose'
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -68,7 +69,7 @@ jobs:
             config --quiet
 
   deploy:
-    if: github.event_name != 'pull_request' && vars.VPS_DEPLOY_ENABLED == 'true'
+    if: github.actor == 'Fairdose' && github.triggering_actor == 'Fairdose' && github.event_name != 'pull_request' && vars.VPS_DEPLOY_ENABLED == 'true'
     needs: validate
     runs-on: [self-hosted, linux, x64, ent-challange-production]
     environment:
