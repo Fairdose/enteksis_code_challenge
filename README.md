@@ -30,8 +30,8 @@ Her iki alt projedeki `run.sh` aynı Compose ortamını yönetir:
 
 Windows üzerinde scripti Git Bash veya WSL ile çalıştırın.
 
-Admin için varsayılan yerel kullanıcı adı `admin`, şifre `enteksis-local-admin` değeridir. Bu
-değerler backend `.env` dosyasında `ADMIN_USERNAME` ve `ADMIN_PASSWORD` ile değiştirilebilir.
+Admin için statik kullanıcı adı `admin`, şifre `123456admin` değeridir. Bu bilgiler challenge
+gereği sabittir ve üretim ortamı için uygun değildir.
 
 ## Test
 

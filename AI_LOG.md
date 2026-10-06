@@ -12,8 +12,9 @@ karar ve doğrulama kayıtları ilgili repolarda tutulur:
 - GitHub Pages yerine client, API ve PostgreSQL'i birlikte başlatan aynı `run.sh` iki repoya eklendi.
 - Frontend, `example_infra` referansındaki nested router, layout, view, component ve store ayrımına
   uyarlandı.
-- Yönetim ekranı `/admin` altında nested route'larla kuruldu. Yerel kullanıcı adı/şifre kontrolü
-  backend'de yapıldı; e-posta yanıtı kullanıcı kararıyla SMTP yerine `mailto:` olarak uygulandı.
+- Yönetim ekranı `/admin` altında nested route'larla kuruldu. `admin` / `123456admin` bilgileri
+  kullanıcı kararıyla backend'de statik tutuldu; e-posta yanıtı SMTP yerine `mailto:` olarak
+  uygulandı.
 
 ## Doğrulama özeti
 
