@@ -27,11 +27,11 @@ if [[ ! "$POSTGRES_PASSWORD" =~ ^[[:xdigit:]]{64}$ ]]; then
   exit 1
 fi
 
-CERTIFICATE_PATH="/etc/letsencrypt/live/$FRONTEND_DOMAIN/fullchain.pem"
-[[ -f "$CERTIFICATE_PATH" ]] || {
-  printf 'TLS sertifikası bulunamadı. Önce scripts/init-tls.sh çalıştırın.\n' >&2
+if ! curl --fail --silent --show-error --head --max-time 10 \
+  "https://$FRONTEND_DOMAIN" >/dev/null; then
+  printf 'Canlı HTTPS endpoint erişilemiyor. Önce scripts/init-tls.sh çalıştırın.\n' >&2
   exit 1
-}
+fi
 
 COMPOSE=(docker compose --env-file "$ENV_FILE" --file "$COMPOSE_FILE")
 "${COMPOSE[@]}" config --quiet
