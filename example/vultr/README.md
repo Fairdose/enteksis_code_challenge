@@ -90,7 +90,8 @@ openssl rand -hex 32
 chmod 600 .env
 ```
 
-Üretilen hex değeri `.env` içindeki `POSTGRES_PASSWORD` alanına yazın. Gerçek `.env`, TLS
+Üretilen hex değeri `.env` içindeki `POSTGRES_PASSWORD` alanına yazın. `ADMIN_USERNAME` ve
+`ADMIN_PASSWORD` alanlarını teslim kanalıyla sağlanan bilgilerle doldurun. Gerçek `.env`, TLS
 dosyaları ve database yedekleri Git tarafından ignore edilir. `.env` dosyasını repoya eklemeyin.
 
 ## 6. İlk TLS ve deploy
@@ -186,7 +187,7 @@ docker compose --env-file example/vultr/.env \
 
 - Form gönderimi yalnızca API `201 Created` döndüğünde başarılı görünmelidir.
 - `https://ent-challange.fairdose.net/admin` doğrudan ve sayfa yenilemesinden sonra açılmalıdır.
-- Admin girişi `admin` / `123456admin` ile çalışmalıdır.
+- Admin girişi production `.env` içinde sağlanan bilgilerle çalışmalıdır.
 - Form kaydı admin listesinde görünmeli ve container yeniden başlatıldıktan sonra korunmalıdır.
 
 ## Operasyon komutları

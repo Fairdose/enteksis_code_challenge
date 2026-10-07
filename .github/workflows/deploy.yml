@@ -17,20 +17,9 @@ jobs:
   validate:
     if: github.actor == 'Fairdose' && github.triggering_actor == 'Fairdose'
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:18-alpine
-        env:
-          POSTGRES_DB: ent_challange
-          POSTGRES_USER: ent_challange
-          POSTGRES_PASSWORD: ent_challange_test_password
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U ent_challange -d ent_challange"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
+    env:
+      ADMIN_USERNAME: admin@example.invalid
+      ADMIN_PASSWORD: ci-test-only-password
     steps:
       - uses: actions/checkout@v5
         with:
@@ -67,6 +56,24 @@ jobs:
             --env-file example/vultr/.env.example \
             --file example/vultr/compose.yaml \
             config --quiet
+          docker run --rm \
+            --volume "$PWD/example/vultr/nginx/http.conf:/etc/nginx/conf.d/default.conf:ro" \
+            nginx:alpine nginx -t
+      - name: Install Playwright browser
+        working-directory: enteksis_client
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Start integration stack
+        run: ./enteksis_client/run.sh start
+      - name: Wait for database-aware API health
+        run: >-
+          curl --fail --silent --show-error --retry 12 --retry-delay 2
+          --retry-connrefused http://localhost:8080/health
+      - name: Run end-to-end tests
+        working-directory: enteksis_client
+        run: pnpm test:e2e
+      - name: Stop integration stack
+        if: ${{ always() }}
+        run: ./enteksis_client/run.sh stop
 
   deploy:
     if: github.actor == 'Fairdose' && github.triggering_actor == 'Fairdose' && github.event_name != 'pull_request' && vars.VPS_DEPLOY_ENABLED == 'true'
