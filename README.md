@@ -48,7 +48,7 @@ bilgilerle doldurun.
 ./enteksis_client/run.sh start
 cd enteksis_client
 pnpm install
-pnpm exec playwright install chromium
+pnpm exec playwright install chromium firefox webkit
 set -a; source ../enteksis_backend/.env; set +a
 pnpm test:e2e
 ```
@@ -56,6 +56,11 @@ pnpm test:e2e
 Backend testleri için `cd enteksis_backend && go test ./...` komutunu kullanın. Ayrıntılı kurulum,
 mimari kararlar, bilinen eksikler ve AI doğrulama kayıtları alt repoların README ve AI_LOG
 dosyalarında yer alır.
+
+Playwright akışları Chromium, Firefox ve WebKit masaüstü motorlarında; mobil akışlar Chromium cihaz
+emülasyonunda çalışır. Public sayfa ile admin girişinde axe-core tabanlı WCAG A/AA kontrolü CI
+kapısının parçasıdır. Türkçe varsayılan dil olmakla birlikte public ve admin arayüzleri kalıcı
+Türkçe/İngilizce tercihini destekler.
 
 ## Problem çözme kaydı
 
@@ -71,6 +76,19 @@ dosyalarında yer alır.
 Hazır landing page şablonu veya takım kodu kullanılmadı. `example_infra` yalnız dizin/router
 yapısı için referans alındı. Vue, Pinia, Vue Router, pgx ve Playwright açık kaynak bağımlılıklardır;
 AI ile alınan kararlar ve doğrulamalar ilgili `AI_LOG.md` dosyalarında ayrıştırılmıştır.
+
+## Bilinen eksikler ve kapsam kararları
+
+- Admin erişimi environment üzerinden sağlanan statik bilgiler ve HTTP Basic kullanır. Kullanıcı
+  yönetimi, parola sıfırlama, RBAC ve sunucu taraflı session; challenge kapsamını ve bütçelenemeyen
+  operasyon yükünü büyütmemek için eklenmedi. Üretim kapsamı genişletilseydi kullanıcı tablosu,
+  hash'lenmiş parolalar, SMTP, reCAPTCHA ve 2FA birlikte tasarlanırdı.
+- Yanıt akışı `mailto:` kullandığı için mesajın gönderildiği otomatik doğrulanamaz. Özel SMTP servisi
+  bu projeye açılmadı; Mailpit, sunucu güvenliği ve mTLS çalışması kapsamı genişleteceğinden
+  uygulanmadı. Yönetici cevap durumunu açıkça işaretler.
+- Admin panelinde temel istemci araması ve durum filtresi vardır; sunucu taraflı sayfalama ve gelişmiş
+  arama yoktur. Beklenen veri hacmi ve arama alanları netleşmeden indeks, arama algoritması ve cache
+  tercihi yapmak spekülatif olacağı için küçük challenge veri setine eklenmedi.
 
 ## Vultr canlı ortam
 

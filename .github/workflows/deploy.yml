@@ -59,9 +59,9 @@ jobs:
           docker run --rm \
             --volume "$PWD/example/vultr/nginx/http.conf:/etc/nginx/conf.d/default.conf:ro" \
             nginx:alpine nginx -t
-      - name: Install Playwright browser
+      - name: Install Playwright browsers
         working-directory: enteksis_client
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Start integration stack
         run: ./enteksis_client/run.sh start
       - name: Wait for database-aware API health
