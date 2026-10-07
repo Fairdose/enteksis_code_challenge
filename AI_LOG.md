@@ -3,8 +3,8 @@
 Bu üst repo, client ve backend teslimlerini Git submodule olarak bir araya getirir. Ayrıntılı araç,
 karar ve doğrulama kayıtları ilgili repolarda tutulur:
 
-- [Client AI_LOG](enteksis_client/AI_LOG.md)
-- [Backend AI_LOG](enteksis_backend/AI_LOG.md)
+- [Client AI_LOG](https://github.com/Fairdose/enteksis_client/blob/main/AI_LOG.md)
+- [Backend AI_LOG](https://github.com/Fairdose/enteksis_backend/blob/main/AI_LOG.md)
 
 ## Önemli kararlar
 
