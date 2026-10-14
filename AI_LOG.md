@@ -4,6 +4,8 @@
 
 - Kullanıcı yönlendirmesiyle web arayüzünün görünür markası ve sayfa metaverisi yeniden `ent-challange` yapıldı; kanonik ürün PDF'sinin içeriği değiştirilmedi.
 - Açılış ve yönetim başlığındaki dil düğmeleri, geçerli dili bayrakla gösteren ortak erişilebilir açılır seçiciye dönüştürüldü. Dil tercihi mevcut Pinia kalıcılığını kullanır.
+- Son taramada yönetim bağlantısı etiketi, e-posta şablonu ve örnek adres içindeki eski marka izleri temizlendi.
+- API başlangıcında kullanılan çalışma alanı adı ve Basic auth realm de `ent-challange` olarak düzeltildi.
 - Vue typecheck/lint, dört Vitest testi ve üretim derlemesi geçti; Chromium/Firefox ile dil kalıcılığı, erişilebilirlik ve responsive kontrollerinden oluşan 10 hedefli Playwright çalıştırması geçti. Mobil menüde açılır seçici ayrıca gözle incelendi.
 
 ## İkinci faz — açılış sayfası görsel revizyonu (14 Ekim 2026)
