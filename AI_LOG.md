@@ -1,5 +1,10 @@
 # AI_LOG
 
+## Benim Masam ürün PDF'si (14 Ekim 2026)
+
+- Uygulamada sunulan eski kurumsal yol haritası PDF'si, ent-challange Benim Masam V0.1'i anlatan üç sayfalık Türkçe belgeyle değiştirildi. Problem, çözüm akışı, somut kullanıcı senaryosu, çalışan işlevler ve teknik güvenceler ayrıldı.
+- Son PDF `output/pdf/ent-challange-urun-tanitimi.pdf` altında teslim edildi; aynı dosya client public varlığına kondu. Kanonik ikinci faz kaynak paketi değiştirilmedi.
+
 ## Marka ve dil seçici düzeltmesi (14 Ekim 2026)
 
 - Kullanıcı yönlendirmesiyle web arayüzünün görünür markası ve sayfa metaverisi yeniden `ent-challange` yapıldı; kanonik ürün PDF'sinin içeriği değiştirilmedi.
