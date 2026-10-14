@@ -1,5 +1,12 @@
 # AI_LOG
 
+## İkinci faz — açılış sayfası görsel revizyonu (14 Ekim 2026)
+
+- Kullanıcının isteğiyle üç uzman görev ayrıldı: güncel `2nd_phase` belgelerinden ürün/görsel brif çıkarma, Vue açılış sayfasına CSS derinlik ve hareket uygulama, responsive/erişilebilirlik testlerini güncelleme. Ana görev tasarım doğrulamasını, entegrasyonu ve yayını üstlendi.
+- Kanonik tanıtım PDF'sindeki “Kim ne yapıyor, kimden ne bekleniyor, hangi iş gecikiyor?” sorusu ve Premium v5'in koyu lacivert, turkuaz, mavi, mor katmanlı görsel dili referans alındı. Yalnız V0.1'de çalışan iç ekip görevi, sorumluluk, kanıtlı teslim ve inceleme akışı anlatıldı; gelecek sürüm ajan/freelancer özellikleri canlı ürün gibi sunulmadı.
+- Hareketli ürün maketi CSS perspektif/dönüşümlerle oluşturuldu. Animasyon yalnız dekoratif alanda tutuldu. 320–1440 px genişliklerde yatay taşma/CTA sınırları ve `prefers-reduced-motion` Chromium/Firefox üzerinde doğrulandı; yerel WebKit sistem paketleri eksik olduğundan üç motorlu sonuç CI'de alınacak.
+- Vue typecheck, ESLint, Oxlint, dört Vitest testi, üretim derlemesi ve gerçek PostgreSQL'e bağlı 28 Chromium/Firefox/mobil Playwright çalıştırması geçti. Eski talep formu ile Benim Masam akışı regresyon testlerinde korundu.
+
 ## İkinci faz — Benim Masam V0.1 (14 Ekim 2026)
 
 - Codex, `2nd_phase/00_CANONICAL_CURRENT` ve `2nd_phase/10_TECHNICAL_CURRENT` paketlerini karşılaştırıp görevden teslim kararına uzanan dikey akışı aynı iki alt repoda uyguladı. Ayrı bir ajan sürüsü çalıştırılmadı; araç ve doğrulama kayıtları aşağıdaki alt repo günlüklerindedir.
@@ -52,4 +59,4 @@ karar ve doğrulama kayıtları ilgili repolarda tutulur:
   image'ları gerçek Docker build'inden, host Nginx yapılandırması ise `nginx -t` kontrolünden geçti.
   Yalnızca `80/443` portlarının internete açık olduğu ayrıca doğrulandı.
 
-Çalışma tek Codex oturumunda alt ajan kullanılmadan gerçekleştirildi.
+İlk faz çalışması tek Codex oturumunda alt ajan kullanılmadan gerçekleştirildi; bu kaydın üstündeki açılış sayfası revizyonu üç uzman görevle yürütüldü.
