@@ -15,6 +15,8 @@ ent-challange markalı **Benim Masam V0.1** operasyon merkezi ve önceki fazın 
 - Ürün PDF: <https://ent-challange.fairdose.net/ent-challange-urun-tanitimi.pdf>
 - API health: <https://ent-challange-api.fairdose.net/health>
 
+Yönetim bağlantıları açık sayfada gösterilmez; yetkili kullanıcılar admin adreslerini doğrudan açar.
+
 Bu umbrella repo iki projeyi Git submodule olarak takip eder. Klonlarken:
 
 ```sh

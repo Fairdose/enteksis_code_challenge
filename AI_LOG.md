@@ -1,5 +1,9 @@
 # AI_LOG
 
+## Yönetim girişinin açık sayfadan kaldırılması (14 Ekim 2026)
+
+- Açık sayfanın menü ve hero bölümündeki Benim Masam girişleri kaldırıldı. Yönetim ekranı `/admin` ve `/admin/masa` adreslerinde oturum kontrolüyle çalışmaya devam eder; bağlantılar yalnız doğrudan URL bilgisiyle açılır.
+
 ## Benim Masam ürün PDF'si (14 Ekim 2026)
 
 - Uygulamada sunulan eski kurumsal yol haritası PDF'si, ent-challange Benim Masam V0.1'i anlatan üç sayfalık Türkçe belgeyle değiştirildi. Problem, çözüm akışı, somut kullanıcı senaryosu, çalışan işlevler ve teknik güvenceler ayrıldı.
