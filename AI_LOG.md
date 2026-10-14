@@ -1,5 +1,11 @@
 # AI_LOG
 
+## Marka ve dil seçici düzeltmesi (14 Ekim 2026)
+
+- Kullanıcı yönlendirmesiyle web arayüzünün görünür markası ve sayfa metaverisi yeniden `ent-challange` yapıldı; kanonik ürün PDF'sinin içeriği değiştirilmedi.
+- Açılış ve yönetim başlığındaki dil düğmeleri, geçerli dili bayrakla gösteren ortak erişilebilir açılır seçiciye dönüştürüldü. Dil tercihi mevcut Pinia kalıcılığını kullanır.
+- Vue typecheck/lint, dört Vitest testi ve üretim derlemesi geçti; Chromium/Firefox ile dil kalıcılığı, erişilebilirlik ve responsive kontrollerinden oluşan 10 hedefli Playwright çalıştırması geçti. Mobil menüde açılır seçici ayrıca gözle incelendi.
+
 ## İkinci faz — açılış sayfası görsel revizyonu (14 Ekim 2026)
 
 - Kullanıcının isteğiyle üç uzman görev ayrıldı: güncel `2nd_phase` belgelerinden ürün/görsel brif çıkarma, Vue açılış sayfasına CSS derinlik ve hareket uygulama, responsive/erişilebilirlik testlerini güncelleme. Ana görev tasarım doğrulamasını, entegrasyonu ve yayını üstlendi.

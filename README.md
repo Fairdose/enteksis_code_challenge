@@ -1,6 +1,6 @@
-# Ent Challange
+# ent-challange
 
-İkinci fazın **Benim Masam V0.1** operasyon merkezi ve önceki fazın hizmet talep uygulaması. Vue istemcisi, Go API ve PostgreSQL aynı iki alt repoda geliştirilir.
+ent-challange markalı **Benim Masam V0.1** operasyon merkezi ve önceki fazın hizmet talep uygulaması. Vue istemcisi, Go API ve PostgreSQL aynı iki alt repoda geliştirilir.
 
 ## Repolar
 
