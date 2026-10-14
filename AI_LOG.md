@@ -1,5 +1,13 @@
 # AI_LOG
 
+## İkinci faz — Benim Masam V0.1 (14 Ekim 2026)
+
+- Codex, `2nd_phase/00_CANONICAL_CURRENT` ve `2nd_phase/10_TECHNICAL_CURRENT` paketlerini karşılaştırıp görevden teslim kararına uzanan dikey akışı aynı iki alt repoda uyguladı. Ayrı bir ajan sürüsü çalıştırılmadı; araç ve doğrulama kayıtları aşağıdaki alt repo günlüklerindedir.
+- Kanonik v2.1.1–v2.1.5 SQL dosyaları baytları değiştirilmeden backend'e kopyalandı; beş SHA-256 değeri manifestle eşleşti. Uygulamanın oturum gereksinimi için bunların sonuna `008_create_auth_sessions.sql` eklendi.
+- Eski hizmet talebi akışı korundu. Yeni `/admin/masa`, sunucu kaynaklı yetki/sekiz dashboard grubu, kontrol listesi, kanıtlı teslim, inceleme, çoklu engel ve idempotent mutasyonlarla bağlandı. Kanonik Türkçe ürün PDF'si istemciye kopyalandı.
+- Gerçek PostgreSQL üzerinde kanonik DDL ve bütünlük doğrulamaları; API durum, kanıtlı teslim, revizyon, idempotency, eski atama ve ekip oturumu kontrolleri geçti. Vue typecheck/lint/build, dört Vitest testi ve Chromium/Firefox masa akışları geçti. Yerel WebKit sistem bağımlılıkları eksik olduğundan bu motorun doğrulaması CI ortamına bırakıldı.
+
+
 Bu üst repo, client ve backend teslimlerini Git submodule olarak bir araya getirir. Ayrıntılı araç,
 karar ve doğrulama kayıtları ilgili repolarda tutulur:
 
@@ -24,9 +32,9 @@ karar ve doğrulama kayıtları ilgili repolarda tutulur:
 - Yeni bir i18n paketi eklemek yerine mevcut typed Türkçe/İngilizce mesaj ve persisted locale yapısı
   admin route'larını kapsayacak şekilde tamamlandı. Playwright masaüstü matrisi Chromium, Firefox ve
   WebKit'e genişletildi; public ve admin girişine axe-core WCAG A/AA kontrolleri eklendi.
-- Kullanıcı/session/RBAC/parola sıfırlama, özel SMTP veya Mailpit+mTLS ve sunucu taraflı gelişmiş
-  arama/sayfalama seçenekleri değerlendirildi. Operasyon ve ürün kararlarını challenge kapsamının
-  ötesine taşıdıkları için uygulanmadı; gerekçeleri README dosyalarında açıklandı.
+- İlk fazda değerlendirilen kullanıcı oturumu ve yetki modeli ikinci fazda görev akışı için
+  uygulandı. Parola sıfırlama, özel SMTP ve sunucu taraflı gelişmiş arama/sayfalama kapsam dışında
+  kaldı; sınırlar README dosyalarında açıklandı.
 
 ## Doğrulama özeti
 

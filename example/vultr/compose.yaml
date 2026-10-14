@@ -52,7 +52,7 @@ services:
       PGDATABASE: ${POSTGRES_DB}
       PGUSER: ${POSTGRES_USER}
       PGPASSWORD: ${POSTGRES_PASSWORD}
-    command: ["sh", "-c", "for file in /migrations/*.sql; do psql -v ON_ERROR_STOP=1 -h db -f \"$$file\"; done"]
+    command: ["enteksis-migrate"]
     depends_on:
       db:
         condition: service_healthy

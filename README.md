@@ -1,6 +1,6 @@
 # Ent Challange
 
-Ent Challange hizmet landing page'i, hizmet talep API'si ve Docker tabanlı PostgreSQL ortamı.
+İkinci fazın **Benim Masam V0.1** operasyon merkezi ve önceki fazın hizmet talep uygulaması. Vue istemcisi, Go API ve PostgreSQL aynı iki alt repoda geliştirilir.
 
 ## Repolar
 
@@ -11,6 +11,7 @@ Ent Challange hizmet landing page'i, hizmet talep API'si ve Docker tabanlı Post
 
 - Uygulama: <https://ent-challange.fairdose.net>
 - Admin: <https://ent-challange.fairdose.net/admin>
+- Benim Masam: <https://ent-challange.fairdose.net/admin/masa>
 - API health: <https://ent-challange-api.fairdose.net/health>
 
 Bu umbrella repo iki projeyi Git submodule olarak takip eder. Klonlarken:
@@ -33,6 +34,7 @@ cp enteksis_backend/.env.example enteksis_backend/.env
 
 - Client: `http://localhost:5173`
 - Admin: `http://localhost:5173/admin`
+- Benim Masam: `http://localhost:5173/admin/masa`
 - API: `http://localhost:8080`
 - PostgreSQL: `localhost:5432`
 
@@ -41,6 +43,12 @@ Windows üzerinde scripti Git Bash veya WSL ile çalıştırın.
 Admin kimlik bilgileri kaynak kodda tutulmaz. `enteksis_backend/.env.example` dosyasını `.env`
 olarak kopyalayıp `ADMIN_USERNAME` ve `ADMIN_PASSWORD` değerlerini teslim kanalıyla ayrıca sağlanan
 bilgilerle doldurun.
+
+## İkinci faz: Benim Masam V0.1
+
+Kanonik v2.1.1–v2.1.5 SQL geçişleri, kaynak paketteki SHA-256 içerikleri değiştirilmeden backend'e alındı. Görevler tek aktif sahip ve sorumlu atamasıyla açılır; sekiz dashboard grubu, kontrol listesi, kabul ölçütü, kanıt bağlantısı, çoklu engel, teslim/inceleme, yeniden atama ve değişmez olay geçmişi gerçek PostgreSQL verisiyle çalışır. Ekip üyeleri kendi hesaplarıyla giriş yapar. Ürün tanıtım PDF'si hem açık sayfadan hem masadan erişilebilir.
+
+Görev mutasyonları `Idempotency-Key` ister; aynı anahtar ve gövde aynı yanıtı döndürür. Yeniden atama güncel primary assignment kimliğini ister ve eski kimlikte `409 stale_assignment` döner. Eski hizmet talep ekranı `/admin/requests` altında kullanılabilir.
 
 ## Test
 
@@ -60,7 +68,7 @@ dosyalarında yer alır.
 Playwright akışları Chromium, Firefox ve WebKit masaüstü motorlarında; mobil akışlar Chromium cihaz
 emülasyonunda çalışır. Public sayfa ile admin girişinde axe-core tabanlı WCAG A/AA kontrolü CI
 kapısının parçasıdır. Türkçe varsayılan dil olmakla birlikte public ve admin arayüzleri kalıcı
-Türkçe/İngilizce tercihini destekler.
+Türkçe/İngilizce tercihini destekler. İkinci faz Benim Masam ekranı ve ürün PDF'si Türkçedir.
 
 ## Problem çözme kaydı
 
@@ -79,10 +87,7 @@ AI ile alınan kararlar ve doğrulamalar ilgili `AI_LOG.md` dosyalarında ayrı�
 
 ## Bilinen eksikler ve kapsam kararları
 
-- Admin erişimi environment üzerinden sağlanan statik bilgiler ve HTTP Basic kullanır. Kullanıcı
-  yönetimi, parola sıfırlama, RBAC ve sunucu taraflı session; challenge kapsamını ve bütçelenemeyen
-  operasyon yükünü büyütmemek için eklenmedi. Üretim kapsamı genişletilseydi kullanıcı tablosu,
-  hash'lenmiş parolalar, SMTP, reCAPTCHA ve 2FA birlikte tasarlanırdı.
+- Eski hizmet talebi yönetimi environment kimliğiyle HTTP Basic kullanır. Benim Masam hesapları PBKDF2 parola özeti ve veritabanında saklanan, yenilenebilen oturumlar kullanır. Self servis parola sıfırlama ve ikinci faktör henüz yoktur.
 - Yanıt akışı `mailto:` kullandığı için mesajın gönderildiği otomatik doğrulanamaz. Özel SMTP servisi
   bu projeye açılmadı; Mailpit, sunucu güvenliği ve mTLS çalışması kapsamı genişleteceğinden
   uygulanmadı. Yönetici cevap durumunu açıkça işaretler.
